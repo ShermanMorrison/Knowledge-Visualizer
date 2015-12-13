@@ -1,0 +1,10 @@
+root:
+  - Root node. Its children show up in initial view
+guitar:
+  - Things I've learned related to guitar.
+  -
+    - root
+programming:
+  - Things I've learned related to programming.
+  -
+    - root
