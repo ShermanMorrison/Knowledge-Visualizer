@@ -8,3 +8,43 @@ programming:
   - Things I've learned related to programming.
   -
     - root
+Django:
+  - Learned Python MVC framework while building Rice Bikes app.
+  -
+    - programming
+Python:
+  - Got familiar with Python
+  -
+    - Django
+MVC design pattern:
+  - Became familiar with MVC design.
+  -
+    - Django
+Java:
+  - Learned programming in Java
+  -
+    - programming
+exceptions:
+  - Learned how exception handling works.
+  -
+    - Java
+java layout managers:
+  - Learned how to use java.awt layout managers
+  -
+    - Java
+dependency managers:
+  - Got used to using dependency managers
+  -
+    - Python
+    - Java
+virtualenv:
+  - Use virtualenv with pip installer to manage Python dependencies
+  -
+    - dependency managers
+    - Django
+Maven:
+  - Used the Maven Central Repository to get dependencies for Java, with IntelliJ.
+  -
+    - dependency managers
+    - Java
+
