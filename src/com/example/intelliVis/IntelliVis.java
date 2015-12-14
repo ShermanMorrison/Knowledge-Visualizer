@@ -2,9 +2,12 @@ package com.example.intelliVis;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.sun.corba.se.impl.interceptors.InterceptorList;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,11 +27,20 @@ class Button extends JButton {
     String label;
     int width = 100;
     int height = 60;
+    IntelliVis vis;
 
-    public Button(String label) {
+    public Button(String label, IntelliVis vis) {
         super(label);
         this.label = label;
+        this.vis = vis;
 
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vis.setNodeName(label);
+                vis.render();
+            }
+        });
     }
 
 //    protected void paintComponent(Graphics g) {
@@ -75,13 +87,20 @@ public class IntelliVis extends JFrame {
         this.nodeName = name;
     }
 
+    public void setNodeName(String name) {
+        nodeName = name;
+    }
+
     public void initUI() {
         setTitle("Knowledge Visualizer");
         render();
     }
 
     public void render() {
-        p = new Surface();
+        if (p==null)
+            p = new Surface();
+        p.removeAll();
+        p.repaint();
         p.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
 
@@ -99,6 +118,11 @@ public class IntelliVis extends JFrame {
         setVisible(true);
     }
 
+    public void clear() {
+        p.removeAll();
+        p.repaint();
+    }
+
     public void drawNode() {
         c.gridheight = 1;
         c.weightx = 1.0;
@@ -107,7 +131,7 @@ public class IntelliVis extends JFrame {
         c.gridy = 1;
         c.gridx = 1;
 
-        Button node = new Button(nodeName);
+        Button node = new Button(nodeName, this);
         p.add(node, c);
     }
 
@@ -116,10 +140,10 @@ public class IntelliVis extends JFrame {
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 0;
 
         if (parents.size() > 0) {
-            Button myBtn5 = new Button(parents.get(0));
+            Button myBtn5 = new Button(parents.get(0), this);
             p.add(myBtn5, c);
         }
 
@@ -127,7 +151,7 @@ public class IntelliVis extends JFrame {
             c.gridx = GridBagConstraints.RELATIVE;
 
             for (int i = 1; i < parents.size(); i++) {
-                Button myBtn6 = new Button(parents.get(i));
+                Button myBtn6 = new Button(parents.get(i), this);
                 p.add(myBtn6, c);
             }
         }
@@ -141,7 +165,7 @@ public class IntelliVis extends JFrame {
         c.gridy = 2;
 
         if (children.size() > 0) {
-            Button myBtn5 = new Button(children.get(0));
+            Button myBtn5 = new Button(children.get(0), this);
             p.add(myBtn5, c);
         }
 
@@ -149,7 +173,7 @@ public class IntelliVis extends JFrame {
             c.gridx = GridBagConstraints.RELATIVE;
 
             for (int i = 1; i < children.size(); i++) {
-                Button myBtn6 = new Button(children.get(i));
+                Button myBtn6 = new Button(children.get(i), this);
                 p.add(myBtn6, c);
             }
         }
