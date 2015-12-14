@@ -21,8 +21,6 @@ import java.util.Map;
  */
 
 
-
-
 class Button extends JButton {
 
     // STATIC VARS
@@ -78,7 +76,7 @@ class Button extends JButton {
         g.drawOval(0, 0, getSize().width-1,
                 getSize().height-1);
     }
-    
+
 
 }
 
@@ -86,7 +84,7 @@ class Button extends JButton {
 public class IntelliVis extends JFrame {
 
     String nodeName;
-    Surface p;
+    Surface p, p0, p1, p2;
     Map map;
     GridBagConstraints c;
 
@@ -104,13 +102,54 @@ public class IntelliVis extends JFrame {
         render();
     }
 
+    public Surface initSurface(Surface s) {
+
+//        if (s != null){
+//            s.removeAll();
+//            s.repaint();
+//        }
+
+        Surface ns = new Surface();
+        ns.setLayout(new GridBagLayout());
+        return ns;
+    }
+
     public void render() {
-        if (p==null)
-            p = new Surface();
-        p.removeAll();
-        p.repaint();
-        p.setLayout(new GridBagLayout());
+
+
+        // Init Surface Panels
+        if (p != null) {
+            p.removeAll();
+        }
+        if (p0 != null) {
+            p0.removeAll();
+        }
+        if (p1 != null) {
+            p1.removeAll();
+        }
+        if (p2 != null) {
+            p2.removeAll();
+        }
+        p = initSurface(p);
+        p0 = initSurface(p0);
+        p1 = initSurface(p1);
+        p2 = initSurface(p2);
+
         c = new GridBagConstraints();
+        c.gridheight = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+
+        c.gridy = 0;
+        p.add(p0, c);
+
+        c.gridy = 1;
+        p.add(p1, c);
+
+        c.gridy = 2;
+        p.add(p2, c);
 
 
         ArrayList<String> parents = getParents(nodeName);
@@ -126,6 +165,7 @@ public class IntelliVis extends JFrame {
         drawNode(nodeLocX);
 
         getContentPane().add(p);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600,600);
         setVisible(true);
@@ -137,16 +177,12 @@ public class IntelliVis extends JFrame {
     }
 
     public void drawNode(int x) {
-        c.gridheight = 1;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-
         c.anchor = GridBagConstraints.CENTER;
-        c.gridy = 1;
         c.gridx = x;
+        c.gridy = 0;
 
         Button node = new Button(this, nodeName, 0);
-        p.add(node, c);
+        p1.add(node, c);
     }
 
     public void drawParents(ArrayList<String> parents) {
@@ -159,7 +195,7 @@ public class IntelliVis extends JFrame {
 
         if (parents.size() > 0) {
             Button myBtn5 = new Button(this, parents.get(0), 1);
-            p.add(myBtn5, c);
+            p0.add(myBtn5, c);
         }
 
         if (parents.size() > 1){
@@ -167,7 +203,7 @@ public class IntelliVis extends JFrame {
 
             for (int i = 1; i < parents.size(); i++) {
                 Button myBtn6 = new Button(this, parents.get(i), 1);
-                p.add(myBtn6, c);
+                p0.add(myBtn6, c);
             }
         }
     }
@@ -178,11 +214,11 @@ public class IntelliVis extends JFrame {
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 0;
 
         if (children.size() > 0) {
             Button myBtn5 = new Button(this, children.get(0), 3);
-            p.add(myBtn5, c);
+            p2.add(myBtn5, c);
         }
 
         if (children.size() > 1){
@@ -190,7 +226,7 @@ public class IntelliVis extends JFrame {
 
             for (int i = 1; i < children.size(); i++) {
                 Button myBtn6 = new Button(this, children.get(i), 3);
-                p.add(myBtn6, c);
+                p2.add(myBtn6, c);
             }
         }
     }
@@ -213,13 +249,13 @@ public class IntelliVis extends JFrame {
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = lo + offset;
-        c.gridy = 1;
+        c.gridy = 0;
 
         int numCousins = hi - lo;
 
         if (numCousins > 0) {
             Button btn = new Button(this, cousins.get(lo), 2);
-            p.add(btn, c);
+            p1.add(btn, c);
         }
 
         if (numCousins > 1){
@@ -227,7 +263,7 @@ public class IntelliVis extends JFrame {
 
             for (int i = lo + 1; i < hi; i++) {
                 Button myBtn6 = new Button(this, cousins.get(i), 2);
-                p.add(myBtn6, c);
+                p1.add(myBtn6, c);
             }
         }
     }
